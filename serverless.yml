@@ -1,0 +1,73 @@
+# Welcome to serverless. Read the docs
+# https://serverless.com/framework/docs/
+
+# Serverless.yml is the configuration the CLI
+# uses to deploy your code to your provider of choice
+
+# The `service` block is the name of the service
+service: serverless-urls
+
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs8.10
+  imRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+      Resource: "arn:aws:dynamodb:us-east-1:249449233644:table/shortUrls"
+
+# The `functions` block defines what code to deploy
+functions:
+  urlshortener:
+    handler: createUrl.run
+    events:
+      - http:
+          path: urlshortener
+          method: post
+  getUrl:
+    handler: getUrl.run
+    events:
+      - http:
+          path: url/{shortCode}
+          method: get
+  statistics:
+    handler: getStatistics.run
+    events:
+      - http:
+          path: statistics/{shortCode}
+          method: get
+
+resources:
+  Resources:
+    UrlTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: shortUrls
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+          -
+            AttributeName: shortCode
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - 
+            IndexName: ShortCodeIndex
+            KeySchema:
+              - 
+                AttributeName: shortCode
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput: 
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1    
