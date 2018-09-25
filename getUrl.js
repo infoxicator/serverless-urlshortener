@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk');
+const AWS = require('aws-sdk'); // eslint-disable-line import/no-unresolved
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -14,7 +14,7 @@ module.exports.run = async (event) => {
 
   const result = await dynamoDB.query(params).promise();
   if (result.Items.length > 0) {
-    result.Items[0].visits = result.Items[0].visits + 1;
+    result.Items[0].visits += 1;
     const updatedItem = {
       TableName: 'shortUrls',
       Item: result.Items[0],
