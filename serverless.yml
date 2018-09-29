@@ -7,24 +7,39 @@
 # The `service` block is the name of the service
 service: serverless-urls
 
+custom:
+  tableName: 'urls-table-${self:provider.stage}'
+
 # The `provider` block defines where your service will be deployed
 provider:
   name: aws
   runtime: nodejs8.10
+  stage: 'dev'
+  region: eu-west-2
+  environment:
+    URLS_TABLE: ${self:custom.tableName}  # RC: Added ENV Variables to avoid hardcoded table names
+    AWS_DEPLOY_REGION: ${self:provider.region}
   imRoleStatements:
     - Effect: Allow
       Action:
+        - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:GetItem
-      Resource: "arn:aws:dynamodb:us-east-1:249449233644:table/shortUrls"
+      Resource:
+        # RC: Removed hardcoded table ARN and replaced by cloud formation Intrinsic Function Reference. 
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html
+        - { "Fn::GetAtt": ["UrlsDynamoDBTable", "Arn" ] }
+        - { "Fn::Join": [ "/", [ 
+           { "Fn::GetAtt": ["UrlsDynamoDBTable", "Arn" ] }, "index", "ShortCodeIndex" 
+          ]]}
 
 # The `functions` block defines what code to deploy
 functions:
-  urlshortener:
+  createUrl: # RC: Changed the name of this function to match the handler for naming convention uniformity
     handler: createUrl.run
     events:
       - http:
-          path: urlshortener
+          path: url # RC: Changed the path to follow REST best practices
           method: post
   getUrl:
     handler: getUrl.run
@@ -41,10 +56,10 @@ functions:
 
 resources:
   Resources:
-    UrlTable:
+    UrlsDynamoDBTable: 
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: shortUrls
+        TableName: ${self:custom.tableName}
         AttributeDefinitions:
           -
             AttributeName: id

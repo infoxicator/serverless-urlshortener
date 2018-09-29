@@ -3,11 +3,12 @@ const uuid = require('uuid/v4');
 const randomstring = require('randomstring');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const { URLS_TABLE } = process.env;
 
 module.exports.run = async (event) => {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: 'shortUrls',
+    TableName: URLS_TABLE,
     Item: {
       id: uuid(),
       url: data.url,
