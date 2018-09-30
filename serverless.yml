@@ -7,8 +7,22 @@
 # The `service` block is the name of the service
 service: serverless-urls
 
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+  
 custom:
   tableName: 'urls-table-${self:provider.stage}'
+  dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+      convertEmptyValues: true
 
 # The `provider` block defines where your service will be deployed
 provider:
