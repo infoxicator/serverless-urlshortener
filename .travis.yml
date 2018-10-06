@@ -12,4 +12,5 @@ script:
   - sls deploy --stage dev -v
   - npm run integration
 deploy:
-  - sls deploy --stage prod
+  provider: script
+  script: - sls deploy --stage prod
