@@ -4,8 +4,12 @@ node_js:
 cache:
   directories:
     - node_modules
-script: 
-    - npm install -g serverless
-    - sls offline start --stage dev
-    - npm run test
-    - sls deploy
+install:
+  - npm install -g serverless
+script:
+  - npm run lint
+  - npm run test
+  - sls deploy --stage dev -v
+  - npm run integration
+deploy:
+  - sls deploy --stage prod

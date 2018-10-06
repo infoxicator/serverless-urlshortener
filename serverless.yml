@@ -10,6 +10,7 @@ service: serverless-urls
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-stack-output
   
 custom:
   tableName: 'urls-table-${self:provider.stage}'
@@ -23,6 +24,8 @@ custom:
       migrate: true
       seed: true
       convertEmptyValues: true
+  output:
+    file: ./build/stack.json
 
 # The `provider` block defines where your service will be deployed
 provider:

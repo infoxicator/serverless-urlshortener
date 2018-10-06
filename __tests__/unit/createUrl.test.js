@@ -1,4 +1,4 @@
-const UrlFactory = require('../lib/UrlFactory');
+const UrlFactory = require('../../lib/UrlFactory');
 
 describe('create new url', () => {
   const dbMock = {};

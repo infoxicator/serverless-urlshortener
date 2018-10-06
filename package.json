@@ -3,11 +3,14 @@
     "private": true,
     "dependencies": {
         "serverless-dynamodb-client": "0.0.2",
+        "serverless-stack-output": "^0.2.3",
         "shortid": "^2.2.13",
         "uuid": "^3.3.2"
     },
     "scripts": {
-        "test": "jest"
+        "test": "jest __tests__/unit/*",
+        "integration": "jest __tests__/integration/*",
+        "lint": "eslint */*.js"
     },
     "devDependencies": {
         "eslint": "^5.6.0",

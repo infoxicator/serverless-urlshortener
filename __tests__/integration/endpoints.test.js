@@ -1,5 +1,6 @@
-const url = 'http://localhost:3000';
-const request = require('supertest')(url);
+const { ServiceEndpoint } = require('../../.build/stack.json'); // deployed endpoint or localhost
+
+const request = require('supertest')(ServiceEndpoint); // eslint-disable-line import/order
 
 describe('/url route', () => {
   it('POST /url creates a new url and returns its shortcode and visits', () => {
