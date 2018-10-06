@@ -13,4 +13,6 @@ script:
   - npm run integration
 deploy:
   provider: script
-  script: - sls deploy --stage prod
+  script: bash scripts/deploy.sh prod
+  on:
+    all_branches: true
