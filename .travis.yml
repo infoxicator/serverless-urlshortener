@@ -11,8 +11,5 @@ script:
   - npm run test
   - sls deploy --stage dev -v
   - npm run integration
-deploy:
-  provider: script
-  script: bash scripts/deploy.sh prod
-  on:
-    all_branches: true
+after_success:
+  - sls deploy --stage prod

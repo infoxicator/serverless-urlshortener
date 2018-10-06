@@ -31,7 +31,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: 'dev'
+  stage: ${opt:stage, 'dev'}
   region: eu-west-2
   environment:
     URLS_TABLE: ${self:custom.tableName}  # RC: Added ENV Variables to avoid hardcoded table names
