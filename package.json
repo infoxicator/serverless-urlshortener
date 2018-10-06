@@ -3,7 +3,6 @@
     "private": true,
     "dependencies": {
         "serverless-dynamodb-client": "0.0.2",
-        "serverless-stack-output": "^0.2.3",
         "shortid": "^2.2.13",
         "uuid": "^3.3.2"
     },
@@ -20,6 +19,7 @@
         "serverless-dynamodb-local": "^0.2.35",
         "serverless-jest-plugin": "^0.1.6",
         "serverless-offline": "^3.25.17",
+        "serverless-stack-output": "^0.2.3",
         "supertest": "^3.3.0"
     }
 }
