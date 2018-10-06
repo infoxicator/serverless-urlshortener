@@ -25,7 +25,7 @@ custom:
       seed: true
       convertEmptyValues: true
   output:
-    file: ./build/stack.json
+    file: .build/stack.json
 
 # The `provider` block defines where your service will be deployed
 provider:
